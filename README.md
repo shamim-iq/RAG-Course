@@ -1,10 +1,11 @@
 # RAG Course — DevOps Learning Workspace
 
 Practical RAG learning through short Kubernetes runbooks, incident notes, and
-deployment procedures. Topics are developed incrementally with readable Python.
+deployment procedures. We add topics one step at a time using readable Python.
 
 ## Start here
 
+- **[Read first: RAG fundamentals](Theory/00_start_here_rag_fundamentals.md)**
 - [Progress tracker](Projects/00_PROGRESS_TRACKER.md)
 - [Theory notes](Theory/02_document_processing_and_chunking.md)
 - [Document processing project](Projects/01_document_processing_and_chunking/README.md)

@@ -1,5 +1,29 @@
 # Learning code preferences
 
+## Plain-language rule for all documentation
+
+- Apply this rule to every new or edited documentation file, including README
+  files, theory, practical notes, interview questions, and progress trackers.
+- Use short sentences, familiar words, bullets, and concrete DevOps examples.
+- Avoid jargon. Keep necessary terms such as embedding, retrieval, and token,
+  but explain them in plain words when first introduced. Expand unfamiliar acronyms.
+- Prefer "run the model" to "inference", "check the result" to "validation",
+  and "minimum matching score" to "relevance threshold".
+- Keep commands, code names, paths, and technical meaning accurate. Do not rename
+  them just to simplify prose. Avoid repeating definitions when a short link helps.
+- Keep docs brief; remove repeated explanations and keep useful diagrams/tables.
+
+## Code and learning conventions
+
+- Use light, meaningful emojis and symbols in learning documentation to aid
+  scanning (e.g. 📥 ingestion, ✂️ chunking, 🔢 embeddings, 🎯 effectiveness).
+  Keep text labels so meaning does not depend on icons. Compare strategy costs
+  with explicit assumptions; present effectiveness by scenario, never as an
+  unsupported universal accuracy ranking.
+- When documenting chunking strategies, identify what selects boundaries:
+  code rules/parsers, an embedding model plus code, or a generative LLM. Distinguish
+  boundary selection from subsequent embedding and from agent orchestration.
+
 - Keep hands-on code simple, readable, and related to realistic DevOps examples.
 - Add concise function docstrings and comments explaining intent, decisions, and
   data flow. Avoid commenting every line or explaining obvious syntax.

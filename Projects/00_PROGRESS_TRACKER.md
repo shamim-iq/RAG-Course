@@ -2,7 +2,7 @@
 
 Legend: ✅ Completed · 🟡 In Progress · ⬜ Not Started
 
-Statuses reflect workspace evidence, not assumed course completion.
+Status shows what we have built or checked; it does not assume course completion.
 
 | Module | Topic | Theory | Hands-on | Notes | Interview Prep | Status |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -18,16 +18,16 @@ Statuses reflect workspace evidence, not assumed course completion.
 | 06 Building the RAG Pipeline | Module activities not yet covered | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started |
 
 - **Current Topic:** Document processing — text ingestion.
-- **Current Activity:** Inspect and manually validate the separate file-type readers in `code/`.
+- **Current Activity:** Read and try the separate file-type readers in `code/`.
 - **Next Immediate Activity:** Run `python code/ingestion.py --type txt`; install optional packages when trying DOCX/PDF.
 - **Completed hands-on labs:** None yet. Sample document preparation is complete.
-- **Interview Prep:** Introductory questions drafted; practice not yet validated.
+- **Interview Prep:** Introductory questions drafted; practice not yet reviewed together.
 
 ## Continue here
 
 - [Current project](01_document_processing_and_chunking/README.md)
 - [Theory map](01_document_processing_and_chunking/THEORY_MAP.md)
-- [Manual validation commands](01_document_processing_and_chunking/README.md#current-activity-text-ingestion)
+- [Commands to try yourself](01_document_processing_and_chunking/README.md#current-activity-text-ingestion)
 
 Before a new topic, inspect this tracker and the relevant existing activity.
 Only create another practical project when that module is reached.
@@ -35,7 +35,7 @@ Only create another practical project when that module is reached.
 
 ## Optional preview requested by user
 
-- [Local Ollama RAG demo](01_document_processing_and_chunking/LOCAL_RAG.md): implemented; real-model validation pending.
+- [Local Ollama RAG demo](01_document_processing_and_chunking/LOCAL_RAG.md): code ready; embeddings and search demonstrated, generated answers still to check.
 - Previews embeddings and retrieval without marking later course modules complete.
 
 

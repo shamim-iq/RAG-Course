@@ -11,8 +11,8 @@
 
 | Check | Observation |
 | --- | --- |
-| Sample preservation | SHA-256 hashes matched before and after each move |
-| Manual file inspection | Awaiting your validation |
+| Sample preservation | File checksums confirmed the contents did not change when moved |
+| Manual file inspection | Awaiting your check |
 | Loader execution | Implemented; awaiting your manual run |
 | Expected document count | 3; not yet validated by execution |
 
@@ -26,18 +26,18 @@
 
 ## Local RAG preview
 
-- Added fixed character chunking, Ollama embeddings, JSON vector storage, and cosine retrieval.
-- Added local chat answers using retrieved excerpts and source citations.
+- Added fixed character chunking, Ollama embeddings, JSON vector storage, and search using cosine similarity (a vector matching score).
+- Added local chat answers using selected text and source references.
 - Ollama API was reachable; its installed model list was empty.
-- Real model execution and quality observations remain pending user validation.
+- You later demonstrated real embeddings and top-k search; generated answers still need checking.
 - Setup and scenario prompts: [LOCAL_RAG.md](LOCAL_RAG.md).
 
 
 ## Separate ingestion readers
 
-- All Python source is now in `code/`; the superseded root scripts were removed.
+- All Python source is now in `code/`; the old scripts in the project root were removed.
 - TXT, Markdown, DOCX, PDF, and CSV each have their own reader.
 - Verified original sample text, type filtering, CSV quoted fields, imports, and paths.
 - DOCX/PDF execution is pending installation of the optional reader packages.
 - Existing `data/` and `local_store/` contents were preserved.
-- User previously validated real embeddings and top-k retrieval; answer generation is pending.
+- You previously confirmed real embeddings and top-k retrieval; answer generation is pending.

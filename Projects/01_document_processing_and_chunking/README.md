@@ -15,10 +15,10 @@ in [Theory](../../Theory/02_document_processing_and_chunking.md); this project t
 | Activity | Status |
 | --- | --- |
 | Prepare sample DevOps documents | ✅ Completed |
-| [Text ingestion](#current-activity-text-ingestion) | 🟡 In Progress — loader ready; manual validation pending |
-| DOCX ingestion | 🟡 In Progress — reader added; manual validation pending |
-| PDF ingestion | 🟡 In Progress — reader added; manual validation pending |
-| CSV ingestion | 🟡 In Progress — reader added; manual validation pending |
+| [Text ingestion](#current-activity-text-ingestion) | 🟡 In Progress — loader ready; your checks pending |
+| DOCX ingestion | 🟡 In Progress — reader added; your checks pending |
+| PDF ingestion | 🟡 In Progress — reader added; your checks pending |
+| CSV ingestion | 🟡 In Progress — reader added; your checks pending |
 | Chunking | 🟡 In Progress — fixed-size implementation in local demo; validation pending |
 
 ## Planned flow
@@ -30,13 +30,13 @@ DevOps documents -> Load/extract text -> Basic cleaning -> Chunks + metadata -> 
 ## Key takeaways
 
 - Reuse the three fictional DevOps documents in `data/`.
-- Run and validate each activity manually before moving to the next concept.
+- Run each activity and check the result yourself before moving to the next concept.
 - Record actual results in [practical notes](notes.md).
 
 ## Current status
 
 - User demonstrated successful text ingestion, embeddings, and top-k retrieval.
-- Readers are now separated by format; DOCX/PDF/CSV manual validation is pending.
+- Readers are now separated by format; DOCX/PDF/CSV your checks is pending.
 - The original ingestion lab remains available. The requested optional demo extends it to local RAG.
 
 See [progress tracker](../00_PROGRESS_TRACKER.md) and
@@ -67,7 +67,7 @@ from this project directory.
 2. Visit files in filename order and select a reader by file extension.
 3. The selected reader extracts text (plain files use `read_text`).
 4. Store that string under `content`, with filename and type under `metadata`.
-5. Return the document list and print it for inspection.
+5. Return the document list and print it so you can inspect it.
 
 The loader reads files directly inside `data/`; it does not scan subfolders.
 TXT/Markdown/CSV must be UTF-8 text. Missing folders or unreadable files produce a
@@ -99,7 +99,7 @@ python .\Projects\01_document_processing_and_chunking\code\ingestion.py
 
 - You demonstrated retrieval of deployment and incident chunks from the existing store.
 - Validate the new reader layout with the commands below.
-- Migration verification: all three sample files retained identical SHA-256 hashes.
+- The three sample files were unchanged after moving them (verified by file checksums).
 
 ### Next step
 
@@ -108,10 +108,10 @@ python .\Projects\01_document_processing_and_chunking\code\ingestion.py
 
 ## Optional local RAG demo
 
-At your request, the project now includes an end-to-end Ollama preview.
+At your request, the project now includes an demo from document loading through Ollama answers.
 Follow [LOCAL_RAG.md](LOCAL_RAG.md) for setup, ingestion, retrieval, and scenario prompts.
-This extends the original ingestion-only scope; ingestion now uses separate readers.
-`code/local_rag.py` uses the existing store; answer-generation validation remains pending.
+This extends the original document-loading exercise; ingestion now uses separate readers.
+`code/local_rag.py` uses the existing store; checking generated answers is still pending.
 Generated chunks, vectors, retrieval results, and answers go in `local_store/`.
 
 ## Code layout and single-format practice
@@ -146,11 +146,11 @@ Other filters return zero until you put matching files in `data/`.
 Study one reader, run the corresponding filter, and inspect the extracted text.
 
 - DOCX: main-body paragraphs and top-level tables; no images, headers, or footers.
-- PDF: text extraction only, not OCR; empty pages produce a warning.
+- PDF: reads stored text, not text in scanned images (OCR); empty pages produce a warning.
 - CSV: UTF-8, comma-separated, with a header row; e.g. `service,status` becomes
   `service: api | status: unhealthy`. Chunking can still split a row.
 - All readers return text; `ingestion.py` attaches the same metadata format.
-- Existing JSON files are preserved. Re-ingest when you add/change source documents.
+- Existing JSON files are preserved. Run ingestion again when you add or change source documents.
 
 Reader references: [python-docx](https://python-docx.readthedocs.io/en/latest/api/document.html)
 and [pypdf](https://pypdf.readthedocs.io/en/stable/user/extract-text.html).

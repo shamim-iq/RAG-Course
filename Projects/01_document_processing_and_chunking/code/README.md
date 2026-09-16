@@ -1,7 +1,7 @@
 # Code Guide
 
 Update this guide whenever a Python file is added, renamed, removed, or changes
-purpose in `code/`. Keep its link, use case, and shared-workflow role current.
+purpose in `code/`. Keep its link, use case, and role in shared steps current.
 
 ## Files by use case
 
@@ -9,10 +9,10 @@ purpose in `code/`. Keep its link, use case, and shared-workflow role current.
 | --- | --- | --- |
 | [txt_ingestion.py](txt_ingestion.py) | `.txt` incident notes | Reads plain text. |
 | [md_ingestion.py](md_ingestion.py) | `.md` runbooks | Reads text, keeping headings and commands. |
-| [docx_ingestion.py](docx_ingestion.py) | `.docx` operational procedures | Extracts body paragraphs and tables. |
-| [pdf_ingestion.py](pdf_ingestion.py) | Text-based `.pdf` manuals | Extracts page text; no OCR for scans. |
+| [docx_ingestion.py](docx_ingestion.py) | `.docx` operational procedures | Reads main paragraphs and tables. |
+| [pdf_ingestion.py](pdf_ingestion.py) | Text-based `.pdf` manuals | Extracts page text; does not read text from scanned images. |
 | [csv_ingestion.py](csv_ingestion.py) | `.csv` incident or service records | Converts rows into text with column labels. |
-| [ingestion.py](ingestion.py) | Loading any supported format | Selects the matching reader and attaches source metadata. |
+| [ingestion.py](ingestion.py) | Loading any supported format | Selects the matching reader and adds source details such as the filename (metadata). |
 | [local_rag.py](local_rag.py) | Building the vector store or asking questions | Runs chunking, embeddings, retrieval, and optional answer generation. |
 
 ## Shared files across use cases
@@ -27,10 +27,9 @@ Which functions run depends on the command:
 | Search existing vectors (`ask --retrieve-only`) | `local_rag.py` | None; reads the saved vector store |
 | Generate an answer (`ask`) | `local_rag.py` | None; retrieves saved chunks and calls Ollama |
 
-No file's processing logic is needed for **every command**. `ingestion.py` is
+No file needs to do work for **every command**. `ingestion.py` is
 shared across ingestion formats; `local_rag.py` is shared across RAG topics.
-Asking questions does not reload source documents, even though the loader modules
-are imported by the script.
+Asking questions does not reload source documents, even though the script imports the reader files.
 
 ## Reading order
 

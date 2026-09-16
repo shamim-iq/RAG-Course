@@ -15,7 +15,7 @@ Question -> same embedding model -> compare every vector -> top 3 chunks
 - **Embedding:** a list of numbers representing text for similarity comparison.
 - **Retrieval:** Python selects the highest cosine similarity scores.
 - **Generation:** the chat model writes an answer using the selected text.
-- This is a fixed RAG workflow, not an autonomous agent. The model does not open
+- This is a fixed RAG workflow, not an agent choosing its own actions. The model does not open
   the JSON database; Python reads it and passes selected evidence to the model.
 
 ## 1. Download models (once)
@@ -28,7 +28,7 @@ Your Ollama service was reachable, but its model list was empty. From PowerShell
 ```
 
 The embedding model creates vectors; the chat model writes answers. Downloads
-need internet; subsequent inference uses your local Ollama service. TXT/Markdown/CSV use standard Python. For DOCX/PDF, install `code/requirements.txt`. Keep Ollama running. If embeddinggemma reports a version
+need internet; after downloading, the models run on your laptop. TXT/Markdown/CSV use standard Python. For DOCX/PDF, install `code/requirements.txt`. Keep Ollama running. If embeddinggemma reports a version
 error, update Ollama (the model requires version 0.11.10 or newer).
 
 ## 2. Build the local store
@@ -53,7 +53,7 @@ The last two files appear when you ask questions. Each run replaces the relevant
 files; `last_answer.json` remains from the previous answer during retrieval-only runs.
 Re-run ingestion after editing documents or changing chunk settings/model. If
 ingestion fails, an older vectors file may remain; fix the error and rebuild
-successfully before querying. Do not edit stored vectors manually.
+successfully before asking questions. Do not edit stored vectors manually.
 
 ## 3. See retrieval before generation
 
@@ -61,8 +61,8 @@ successfully before querying. Do not edit stored vectors manually.
 python code/local_rag.py ask "What caused pending pods during the traffic spike?" --retrieve-only
 ```
 
-Expect three excerpts and their scores; inspect which comes from the incident.
-Scores measure similarity, not factual confidence or proof of a diagnosis.
+Expect three text passages and their matching scores; inspect which comes from the incident.
+Scores show how closely text matches; they do not prove an answer or diagnosis is correct.
 
 ## 4. Ask the local assistant
 
@@ -85,9 +85,9 @@ python code/local_rag.py ask "What is our Azure SQL backup retention policy?"
 | Missing documentation | Should say the information was not found |
 
 Small models may omit details or invent claims despite the prompt. Compare each
-answer and citation with the printed excerpts. Top-k always returns nearest
-matches, including for unrelated questions; there is no calibrated relevance
-threshold here. The missing-document prompt tests whether the model abstains.
+answer and citation with the printed passages. Top-k always returns nearest
+matches, including for unrelated questions; there is no minimum matching
+score here. The missing-document question tests whether the model says it lacks the information.
 The demo reads historical documents and has no live EKS access.
 
 ## 5. Simple experiment
@@ -104,26 +104,26 @@ can split commands and sentences; structure-aware chunking is a later improvemen
 ## Actual observations
 
 - Ollama reachable; no installed models at setup time.
-- Model download, real embeddings, retrieval quality, and answers await your run.
-- JSON + an exhaustive vector scan is a learning substitute for a vector database,
-  suitable for these three documents, without database infrastructure.
+- You demonstrated real embeddings and top-k search. Checking generated answers is still pending.
+- A JSON file + comparing every stored vector is a learning substitute for a vector database,
+  suitable for these three documents, without running a database service.
 
 ## Code reading order
 
 Start with `build_index`, then `ask`; follow the helper functions when needed.
 Search `You should understand` for the complete sections worth studying closely.
-`ollama` is only the local HTTP helper; `code/ingestion.py` routes files to the separate format readers.
+`ollama` is only the function that sends requests to Ollama; `code/ingestion.py` chooses a reader for each file type.
 
 | Code Section | What I Need to Know | Depth Required |
 | --- | --- | --- |
 | Ingestion | Files become text with source metadata | Understand well |
-| Chunking | Character limits and overlap preserve some boundary context | Understand well |
+| Chunking | Character limits and overlap repeat some text near each cut | Understand well |
 | Embeddings | Document and query vectors must use the same model | Understand well |
 | Vector storage | Keep chunk text, metadata, and vector together | Understand well |
 | Cosine similarity | Compares query and chunk vectors; not confidence | Concept only |
 | Top-K | Rank scores and select the closest chunks | Understand well |
 | Context and LLM | Send selected evidence with the question; verify citations | Understand well |
-| argparse | Parses command-line options | Basic awareness |
+| argparse | Reads command-line options | Basic awareness |
 | HTTP, JSON, filesystem | Connect to Ollama and read/write files | Basic awareness |
 
 Sources: [Ollama embeddings API](https://docs.ollama.com/api/embed),
