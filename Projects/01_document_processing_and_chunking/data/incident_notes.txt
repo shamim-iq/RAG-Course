@@ -1,0 +1,12 @@
+Incident: API pods became unhealthy during a traffic spike.
+Environment: Example AWS EKS staging cluster.
+
+CloudWatch showed high CPU usage.
+The Kubernetes HPA scaled the deployment from 3 replicas to 6.
+One node reached resource capacity, leaving some new pods Pending.
+
+The cluster autoscaler provisioned a new node after detecting unschedulable pods.
+The pending pods were scheduled and became ready.
+Service recovered after approximately 8 minutes.
+
+Follow-up: Review CPU requests and autoscaler limits before the next load test.
