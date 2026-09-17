@@ -213,3 +213,4 @@ Retrieved rollback instructions + "How do I roll back?"
 1. [Document processing notes](02_document_processing_and_chunking.md)
 2. [Chunking strategies: which to use when](02_chunking_strategies.md)
 3. [Code guide](../Projects/01_document_processing_and_chunking/code/README.md)
+4. [Scoring and re-ranking](04_scoring_and_reranking.md) — how matches are ordered before answering.
