@@ -12,7 +12,7 @@ Status shows what we have built or checked; it does not assume course completion
 | 02 Document Processing and Chunking | PDF ingestion | ⬜ Not Started | 🟡 In Progress | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started |
 | 02 Document Processing and Chunking | CSV ingestion | ⬜ Not Started | 🟡 In Progress | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started |
 | 02 Document Processing and Chunking | Chunking | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started |
-| 03 Keyword Search and Retrieval | Module activities not yet covered | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started |
+| 03 Keyword Search and Retrieval | Retrieval methods | 🟡 In Progress | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | 🟡 In Progress |
 | 04 Semantic Search and Embeddings | Module activities not yet covered | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started |
 | 04 Semantic Search and Embeddings | Scoring and re-ranking | 🟡 In Progress | ⬜ Not Started | ✅ Completed | ⬜ Not Started | 🟡 In Progress |
 | 05 Vector Databases | Module activities not yet covered | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started |
@@ -27,6 +27,7 @@ Status shows what we have built or checked; it does not assume course completion
 ## Continue here
 
 - [Scoring and re-ranking theory](../Theory/04_scoring_and_reranking.md): notes added; re-ranking code not implemented.
+- [Retrieval methods theory](../Theory/03_retrieval_methods.md): sparse/BM25, dense, vector search, and hybrid search notes added; retrieval code not implemented.
 
 - [Current project](01_document_processing_and_chunking/README.md)
 - [Theory map](01_document_processing_and_chunking/THEORY_MAP.md)
