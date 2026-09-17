@@ -23,23 +23,35 @@ This supplies information at question time; it does not train the model on our f
 ```mermaid
 flowchart TD
     subgraph PREP["📥 PREPARE KNOWLEDGE - when documents change"]
-        R["📄 Runbooks"] --> L["Load/extract text"] --> C["✂️ Chunks"]
+        R["📄 Runbooks<br/>Example: deployment_runbook.md"] --> L["Load/extract text<br/>Example: read Markdown or extract PDF text"]
+        L --> C["✂️ Split into chunks<br/>Examples: fixed-size, recursive, heading-based"]
         C --> E["🔢 Embedding model"] --> V["Chunk vectors"]
-        C --> T["Text + source metadata"]
-        V --> S[("🗄️ Store")]
+        C --> T["Chunk text + source metadata<br/>Example: rollback steps + filename + chunk index"]
+        V --> S[("🗄️ Store<br/>One record per chunk")]
         T --> S
     end
 
     subgraph ASK["❓ ANSWER A QUESTION - for each question"]
-        Q["Question"] --> QE["🔢 SAME embedding model"] --> QV["Query vector"]
-        QV --> SEARCH["🎯 Compare with stored chunk vectors using cosine similarity"]
-        SEARCH --> K["Top-k matching chunks"]
-        K --> P["📚 Their text + source labels + question + instructions = prompt"]
+        Q["Question<br/>Example: How do I roll back the API?"]
+        subgraph DENSE["🔢 Dense retrieval"]
+            QE["🔢 SAME embedding model"] --> QV["Query vector"]
+            subgraph SEARCH["🔎 Vector search - compare with stored chunk vectors"]
+                SCORE["📊 Score vector matches<br/>Cosine similarity in our demo"]
+                RANK["Order chunks by score<br/>Highest similarity first"]
+                K["🎯 Select top-k chunks<br/>Example: k = 2"]
+                SCORE --> RANK --> K
+            end
+            QV --> SCORE
+            K --> CONTEXT["📚 Fetch selected chunk text and source labels<br/>Example: rollback steps from deployment_runbook.md"]
+        end
+        Q --> QE
+        CONTEXT --> P["📝 Build the input for the answering model<br/>Include the question and retrieved passages<br/>Instruction: answer from these passages and cite sources"]
+        Q -.->|Original question| P
         P --> LLM["🤖 LLM"] --> A["💬 Answer"]
     end
 
-    S -->|Stored vectors| SEARCH
-    S -.->|Selected text + source metadata| P
+    S -->|Stored vectors| SCORE
+    S -.->|Selected text + source metadata| CONTEXT
 
     classDef input fill:#dbeafe,stroke:#2563eb,color:#111827
     classDef embedding fill:#f3e8ff,stroke:#9333ea,color:#111827
@@ -49,12 +61,22 @@ flowchart TD
     class R,L,C,Q input
     class E,V,QE,QV embedding
     class T,S storage
-    class SEARCH,K search
-    class P,LLM,A result
+    class SCORE,RANK,K search
+    class CONTEXT,P,LLM,A result
 ```
 
 **Colors:** blue = inputs; purple = embeddings; teal = storage;
 yellow = search; green = context and answer.
+
+The chunking methods shown are alternatives, not steps to run in sequence.
+Fixed-size and recursive splitting use code rules; heading-based splitting uses
+code or a parser to find headings. Our demo splits by character count with overlap.
+Embedding happens after those boundaries are chosen.
+
+The input sent to the answering model is called the **prompt**. It contains the
+question, retrieved text with source labels, and instructions for writing the answer.
+See the [dense retrieval flow in Retrieval Methods](03_retrieval_methods.md) for
+more on embeddings, vector search, and scoring.
 
 We store text as well as vectors: search uses the numbers; the answering model
 receives the selected text.
