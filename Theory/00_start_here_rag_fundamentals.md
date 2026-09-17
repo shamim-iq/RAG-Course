@@ -25,7 +25,10 @@ flowchart TD
     subgraph PREP["📥 PREPARE KNOWLEDGE - when documents change"]
         R["📄 Runbooks<br/>Example: deployment_runbook.md"] --> L["Load/extract text<br/>Example: read Markdown or extract PDF text"]
         L --> C["✂️ Split into chunks<br/>Examples: fixed-size, recursive, heading-based"]
-        C --> E["🔢 Embedding model"] --> V["Chunk vectors"]
+        subgraph BIDOC["🔢 Bi-encoder - document encoding path"]
+            E["Embedding model"] --> V["Chunk vectors"]
+        end
+        C --> E
         C --> T["Chunk text + source metadata<br/>Example: rollback steps + filename + chunk index"]
         V --> S[("🗄️ Store<br/>One record per chunk")]
         T --> S
@@ -33,8 +36,10 @@ flowchart TD
 
     subgraph ASK["❓ ANSWER A QUESTION - for each question"]
         Q["Question<br/>Example: How do I roll back the API?"]
-        subgraph DENSE["🔢 Dense retrieval"]
-            QE["🔢 SAME embedding model"] --> QV["Query vector"]
+        subgraph DENSE["🔎 Layer 1 - Dense retrieval"]
+            subgraph BIQUERY["🔢 Bi-encoder - query encoding path"]
+                QE["SAME embedding model"] --> QV["Query vector"]
+            end
             subgraph SEARCH["🔎 Vector search - compare with stored chunk vectors"]
                 SCORE["📊 Score vector matches<br/>Cosine similarity in our demo"]
                 RANK["Order chunks by score<br/>Highest similarity first"]
@@ -45,7 +50,18 @@ flowchart TD
             K --> CONTEXT["📚 Fetch selected chunk text and source labels<br/>Example: rollback steps from deployment_runbook.md"]
         end
         Q --> QE
-        CONTEXT --> P["📝 Build the input for the answering model<br/>Include the question and retrieved passages<br/>Instruction: answer from these passages and cite sources"]
+        CONTEXT --> USE{"Use optional re-ranking?"}
+        subgraph CROSS["🧠 Layer 2 - Optional cross-encoder re-ranking"]
+            PAIR["Read question + each candidate chunk's text together"]
+            RESCORE["Predict a relevance score for each pair<br/>Learned model score, not cosine similarity"]
+            KEEP["Reorder candidates and keep the best chunks<br/>Preserve their source labels"]
+            PAIR --> RESCORE --> KEEP
+        end
+        USE -->|Yes| PAIR
+        Q -.->|Original question| PAIR
+        USE -->|No - our current demo| P
+        KEEP --> P
+        P["📝 Build the input for the answering model<br/>Include the question and selected passages<br/>Instruction: answer from these passages and cite sources"]
         Q -.->|Original question| P
         P --> LLM["🤖 LLM"] --> A["💬 Answer"]
     end
@@ -57,16 +73,30 @@ flowchart TD
     classDef embedding fill:#f3e8ff,stroke:#9333ea,color:#111827
     classDef storage fill:#ccfbf1,stroke:#0f766e,color:#111827
     classDef search fill:#fef3c7,stroke:#b45309,color:#111827
+    classDef rerank fill:#fce7f3,stroke:#be185d,color:#111827
     classDef result fill:#dcfce7,stroke:#15803d,color:#111827
     class R,L,C,Q input
     class E,V,QE,QV embedding
     class T,S storage
     class SCORE,RANK,K search
+    class USE,PAIR,RESCORE,KEEP rerank
     class CONTEXT,P,LLM,A result
+    style BIDOC fill:#faf5ff,stroke:#9333ea,color:#111827
+    style BIQUERY fill:#faf5ff,stroke:#9333ea,color:#111827
+    style CROSS fill:#fdf2f8,stroke:#be185d,color:#111827
 ```
 
 **Colors:** blue = inputs; purple = embeddings; teal = storage;
-yellow = search; green = context and answer.
+yellow = search; pink = optional re-ranking; green = context and answer.
+
+The two **bi-encoder paths** encode chunks and questions separately, usually with
+the same embedding model. Vector search then compares their vectors.
+The optional **cross-encoder** reads each question and candidate chunk together
+to predict a new relevance score before the answer prompt is built.
+
+Our current demo skips the cross-encoder. With re-ranking, a system might retrieve
+20 candidates and keep the best 5; these are example counts, not demo settings.
+Re-ranking only reorders retrieved candidates; it cannot recover a missing chunk.
 
 The chunking methods shown are alternatives, not steps to run in sequence.
 Fixed-size and recursive splitting use code rules; heading-based splitting uses
