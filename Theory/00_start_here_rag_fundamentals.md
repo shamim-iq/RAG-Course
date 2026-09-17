@@ -23,20 +23,38 @@ This supplies information at question time; it does not train the model on our f
 ```text
 PREPARE KNOWLEDGE — when documents change
 
-Runbooks → Load/extract text → Chunks → Embeddings → Store
-                                └──── text + source metadata ────┘
+Runbooks → Load/extract text → Chunks
+                                ├─ Embedding model → Chunk vectors ─┐
+                                └─ Text + source metadata ──────────┤
+                                                                    ↓
+                                                                  Store
 
 ANSWER A QUESTION — for each question
 
-Question → Query embedding → Compare with stored vectors → Top-k chunks
-                                                               ↓
-                                                  Their text + question
-                                                               ↓
-                                                          LLM → Answer
+Question → SAME embedding model → Query vector
+                                      ↓
+                  Compare with stored chunk vectors
+                         using cosine similarity
+                                      ↓
+                              Top-k matching chunks
+                                      ↓
+                  Their text + source labels + question
+                           + instructions = prompt
+                                      ↓
+                                LLM → Answer
 ```
 
 We store text as well as vectors: search uses the numbers; the answering model
 receives the selected text.
+
+See the [commented chunk storage demo](00_chunk_storage_demo.md) for one runbook
+split into three chunks and stored as three records, each with text, metadata,
+and a vector. LLM means large language model.
+
+- 🔢 Chunk vectors are prepared ahead of time. Only the question needs a new
+  vector for each search. Follow the embedding model's query/document input rules.
+- 🎯 Cosine similarity scores vector matches; it does not create embeddings.
+- 🤖 The embedding model creates vectors. The answering model writes the answer.
 
 ## 3. Source, loading, extraction, and ingestion
 
