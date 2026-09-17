@@ -59,13 +59,40 @@ BM25 scores text using signals like:
 **Dense retrieval** uses embeddings. An embedding is a list of numbers that
 represents the meaning of text.
 
-```text
-"How do I undo a bad deploy?"
-          ↓
-Embedding model
-          ↓
-Vector search finds chunks about rollback
+Dense retrieval includes creating the query vector and searching stored chunk
+vectors. Vector search is part of this process, not a later retrieval method.
+
+```mermaid
+flowchart TD
+    Q["❓ Question: How do I undo a bad deploy?"]
+    S["🗄️ Stored chunk vectors created during ingestion"]
+    subgraph D["🔢 Dense retrieval"]
+        E["🔢 Same embedding model used for chunks"]
+        V["🔢 Query vector"]
+        subgraph VS["🔎 Vector search"]
+            C["📊 Compare with stored chunk vectors using cosine similarity or dot product"]
+            K["🎯 Select top-k matching chunks"]
+        end
+        R["📚 Return chunk text and source metadata"]
+        E --> V --> C --> K --> R
+    end
+    Q --> E
+    S --> C
+    classDef input fill:#dbeafe,stroke:#2563eb,color:#111827
+    classDef embedding fill:#f3e8ff,stroke:#9333ea,color:#111827
+    classDef search fill:#fef3c7,stroke:#b45309,color:#111827
+    classDef result fill:#dcfce7,stroke:#15803d,color:#111827
+    class Q,S input
+    class E,V embedding
+    class C,K search
+    class R result
 ```
+
+- 🔢 **Embedding stage:** converts text into vectors.
+- 🎯 **Search stage:** scores vector matches and selects the top-k chunks.
+  Cosine similarity or dot product is a scoring function within this step.
+  Use the function expected by the embedding model; our demo uses cosine similarity.
+- 📚 **Result stage:** returns the selected text and metadata for the answer prompt.
 
 Dense retrieval can find related ideas even when the words differ.
 

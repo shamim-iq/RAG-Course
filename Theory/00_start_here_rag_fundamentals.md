@@ -20,29 +20,41 @@ This supplies information at question time; it does not train the model on our f
 
 ## 2. The two flows
 
-```text
-PREPARE KNOWLEDGE — when documents change
+```mermaid
+flowchart TD
+    subgraph PREP["📥 PREPARE KNOWLEDGE - when documents change"]
+        R["📄 Runbooks"] --> L["Load/extract text"] --> C["✂️ Chunks"]
+        C --> E["🔢 Embedding model"] --> V["Chunk vectors"]
+        C --> T["Text + source metadata"]
+        V --> S[("🗄️ Store")]
+        T --> S
+    end
 
-Runbooks → Load/extract text → Chunks
-                                ├─ Embedding model → Chunk vectors ─┐
-                                └─ Text + source metadata ──────────┤
-                                                                    ↓
-                                                                  Store
+    subgraph ASK["❓ ANSWER A QUESTION - for each question"]
+        Q["Question"] --> QE["🔢 SAME embedding model"] --> QV["Query vector"]
+        QV --> SEARCH["🎯 Compare with stored chunk vectors using cosine similarity"]
+        SEARCH --> K["Top-k matching chunks"]
+        K --> P["📚 Their text + source labels + question + instructions = prompt"]
+        P --> LLM["🤖 LLM"] --> A["💬 Answer"]
+    end
 
-ANSWER A QUESTION — for each question
+    S -->|Stored vectors| SEARCH
+    S -.->|Selected text + source metadata| P
 
-Question → SAME embedding model → Query vector
-                                      ↓
-                  Compare with stored chunk vectors
-                         using cosine similarity
-                                      ↓
-                              Top-k matching chunks
-                                      ↓
-                  Their text + source labels + question
-                           + instructions = prompt
-                                      ↓
-                                LLM → Answer
+    classDef input fill:#dbeafe,stroke:#2563eb,color:#111827
+    classDef embedding fill:#f3e8ff,stroke:#9333ea,color:#111827
+    classDef storage fill:#ccfbf1,stroke:#0f766e,color:#111827
+    classDef search fill:#fef3c7,stroke:#b45309,color:#111827
+    classDef result fill:#dcfce7,stroke:#15803d,color:#111827
+    class R,L,C,Q input
+    class E,V,QE,QV embedding
+    class T,S storage
+    class SEARCH,K search
+    class P,LLM,A result
 ```
+
+**Colors:** blue = inputs; purple = embeddings; teal = storage;
+yellow = search; green = context and answer.
 
 We store text as well as vectors: search uses the numbers; the answering model
 receives the selected text.
