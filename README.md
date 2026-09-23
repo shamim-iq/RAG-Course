@@ -10,6 +10,7 @@ deployment procedures. We add topics one step at a time using readable Python.
 - [Theory notes](Theory/02_document_processing_and_chunking.md)
 - [Retrieval methods](Theory/03_retrieval_methods.md)
 - [AWS RAG with Bedrock Knowledge Bases](Theory/05_aws_bedrock_knowledge_bases.md)
+- [RAG evals and groundedness](Theory/06_evals_and_groundedness.md)
 - [Document processing project](Projects/01_document_processing_and_chunking/README.md)
 - [Python code guide](Projects/01_document_processing_and_chunking/code/README.md)
 - [Local Ollama RAG demo](Projects/01_document_processing_and_chunking/LOCAL_RAG.md)
