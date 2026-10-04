@@ -296,3 +296,22 @@ Retrieved rollback instructions + "How do I roll back?"
 2. [Chunking strategies: which to use when](02_chunking_strategies.md)
 3. [Code guide](../Projects/01_document_processing_and_chunking/code/README.md)
 4. [Scoring and re-ranking](04_scoring_and_reranking.md) — how matches are ordered before answering.
+
+## 🎤 Interview FAQ
+
+Key practice questions for this topic; answers are kept short.
+
+1. **What is RAG?**
+   Find relevant source text, add it to the question, and ask a model to answer from it. This does not train the model on the documents.
+
+2. **How do ingestion and retrieval differ?**
+   Ingestion prepares and stores documents. Retrieval finds useful stored chunks when a question arrives.
+
+3. **Why split documents and use overlap?**
+   Smaller pieces help search focus on relevant text. Overlap repeats nearby text to reduce lost context across cuts.
+
+4. **Are embeddings the same as answers?**
+   No. Embeddings are numeric representations used for matching; the chat model writes answers from selected text.
+
+5. **Can this assistant tell me the current EKS cluster state?**
+   Not from historical runbooks alone. Current state requires fresh observations or a separate live-data connection.

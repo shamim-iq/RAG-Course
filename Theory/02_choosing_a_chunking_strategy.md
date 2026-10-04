@@ -106,3 +106,22 @@ that answers your test questions well with the least unnecessary work.
 📚 Further reading: [AWS chunking guide](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking.html)
 describes fixed-size, semantic, and parent/child chunking. The choices above are
 practical suggestions for our sample documents, not published benchmark results.
+
+## 🎤 Interview FAQ
+
+Key practice questions for this topic; answers are kept short.
+
+1. **How would you choose a chunking strategy?**
+   Inspect the document structure and typical questions. Start with simple rules, then compare whether the retrieved pieces contain complete answers.
+
+2. **What would you try for a rollback runbook?**
+   Keep the rollback heading, checks, commands, and verification together. Split oversized sections only as needed.
+
+3. **When would you try semantic splitting?**
+   When simpler paragraph or heading rules separate related facts in loosely organized text, and extra model processing is affordable.
+
+4. **How do you compare two strategies fairly?**
+   Keep documents, questions, embedding model, and top-k the same. Check complete evidence, answer support, repeated text, time, and resources.
+
+5. **Should you choose solely by PDF or TXT extension?**
+   No. A short incident note and a long manual need different treatment even when both are PDFs.

@@ -111,3 +111,22 @@ preserved. Page numbers or section names require code that captures them.
 **Basic awareness:** databases may use a different record layout or store text separately.
 
 Back to [RAG fundamentals](00_start_here_rag_fundamentals.md).
+
+## 🎤 Interview FAQ
+
+Key practice questions for this topic; answers are kept short.
+
+1. **Does one document produce one database record?**
+   Not necessarily. This example creates one record per chunk, with a separate vector for each.
+
+2. **Why store text as well as vectors?**
+   Search compares vectors, but the answering model needs readable text. Text can also be stored elsewhere with a reliable reference.
+
+3. **How do chunk IDs and document IDs differ?**
+   A chunk ID identifies one piece; a document ID links all pieces from the same source.
+
+4. **Does chunk_index: 2 mean there are two chunks?**
+   No. With numbering starting at zero, it identifies the third chunk.
+
+5. **Can the sample vectors prove the rollback chunk will be retrieved?**
+   No. They are invented for illustration. Real retrieval needs model-generated vectors and a test question.

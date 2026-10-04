@@ -132,3 +132,25 @@ Ollama embeddings → Python cosine scores → top-k chunks → optional chat an
 - A minimum matching score would need testing; top-k currently returns the
   nearest chunks even when none contains the answer.
 - Re-ranking is optional and needs no agent. This document adds theory only.
+
+## 🎤 Interview FAQ
+
+Key practice questions for this topic; answers are kept short.
+
+1. **Bi-encoder versus cross-encoder?**
+   A bi-encoder represents the question and chunk separately as vectors. A cross-encoder reads them together and scores how relevant the pair is.
+
+2. **Why retrieve first and re-rank afterward?**
+   Vector search creates a shortlist quickly. A cross-encoder spends more processing on that smaller set to improve its order.
+
+3. **Does a cosine score of 0.8 mean 80% answer accuracy?**
+   No. It measures vector similarity. It is not a probability that the answer is correct.
+
+4. **Can re-ranking find a chunk missed by initial retrieval?**
+   Not if the chunk is absent from the shortlist. Re-ranking can only score the candidates supplied to it.
+
+5. **Does a cross-encoder generate the final answer?**
+   In this design it scores passages. The chat model writes the answer using the selected text.
+
+6. **How would you check whether re-ranking helped?**
+   Use the same questions and compare whether complete supporting evidence reaches the answer step. Also measure added time and check the generated claims.

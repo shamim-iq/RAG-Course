@@ -12,6 +12,10 @@
 - Keep commands, code names, paths, and technical meaning accurate. Do not rename
   them just to simplify prose. Avoid repeating definitions when a short link helps.
 - Keep docs brief; remove repeated explanations and keep useful diagrams/tables.
+- End each theory document with a brief `## 🎤 Interview FAQ` section containing
+  topic-specific questions and short expected answers for a DevOps/Platform
+  Engineer. Keep it at the end when adding new material. Prefer 4–6 useful
+  questions; do not claim measured interview frequency without evidence.
 
 ## Code and learning conventions
 
@@ -54,3 +58,12 @@
   whether it is format-specific or shared across workflows. Distinguish loading
   documents from querying an existing store; do not imply every reader runs for
   every command. Keep the guide brief.
+
+## Mermaid flowcharts for RAG theory
+
+- Use Mermaid directly inside Markdown for architecture and workflow diagrams.
+- Keep diagrams simple: short labels, familiar words, meaningful colors, and light emojis.
+- Explain the flow briefly in text so the lesson is clear without the diagram.
+- Clearly label optional steps and distinguish implemented behaviour from planned features.
+- Do not generate separate interactive HTML diagrams or Archify assets.
+- Keep the Interview FAQ at the end of each theory document.

@@ -5,6 +5,42 @@
 Read [RAG fundamentals](00_start_here_rag_fundamentals.md) first. This note
 explains common retrieval methods before the model writes an answer.
 
+## 🔢 First: what are embeddings, and which methods need them?
+
+An **embedding** is a model-created list of numbers (a **vector**) representing
+text. The model has learned language patterns, so related wording can produce
+similar vectors. Numbers let the search code compare and rank possible matches.
+
+```text
+During ingestion:
+"Rollback procedure" → embedding model → chunk vector → save with original text
+
+When you ask:
+"How do I undo a release?" → same embedding model → question vector
+                                                        ↓
+                               compare with saved vectors → matching chunks
+```
+
+- **Why use it?** Connect related ideas even when the question and document use different words.
+- **How?** Compare question and chunk vectors using cosine similarity or the model's intended scoring method.
+- **What reaches the chat model?** The selected chunk text, not just its vector.
+- Embedding a document does not train the model on it, and a close match is not proof of a correct answer.
+
+| Retrieval mechanism | Uses learned embeddings? | How and why |
+| --- | --- | --- |
+| TF-IDF-based keyword search | No | Builds word-weight vectors from counts and rarity to compare shared words |
+| BM25 keyword search | No | Scores matching terms using frequency, rarity, and text length |
+| Dense retrieval for semantic search | Yes | Embeds chunks and questions separately to find related meaning |
+| Vector search in our demo | Searches the embeddings | Compares the query vector with saved chunk vectors; this is the lookup inside dense retrieval |
+| Hybrid search: keywords + dense retrieval | Yes, in its dense part | Combines meaning-based matches with keyword results to cover both wording and exact terms |
+
+💡 **A vector is not always a learned embedding.** TF-IDF also produces lists
+of numbers, but its values come from word statistics rather than a trained
+embedding model. Cosine similarity can compare either kind of vector.
+
+Our project uses **Ollama embeddings → Python cosine comparison → top-k chunks**.
+The original text stays available so you can inspect what the answer is based on.
+
 ## 🎯 Why retrieval matters
 
 Retrieval decides which chunks reach the answer step.
@@ -340,3 +376,20 @@ matters, and hybrid search when a real system needs both.
 
 Next: [Scoring and re-ranking](04_scoring_and_reranking.md) explains how a second
 model can reorder retrieved results before the chat model writes an answer.
+
+## 🎤 Interview FAQ
+
+1. **How do keyword and semantic search differ?**
+   Keyword search matches terms. Embedding-based semantic search can match related wording.
+
+2. **Do TF-IDF and BM25 require an embedding model?**
+   No. They use word statistics. Dense retrieval uses learned embeddings.
+
+3. **Where does cosine similarity fit?**
+   It compares vectors during search; it does not create embeddings or guarantee relevance.
+
+4. **Why combine keyword and dense retrieval for DevOps?**
+   Exact error codes matter, but engineers may describe the same problem in different words.
+
+5. **What reaches the chat model after retrieval?**
+   Selected chunk text and source labels, together with the question and instructions.

@@ -74,4 +74,21 @@ Status: 🟡 In Progress — fixed-size chunks and retrieval observed in the han
 See [Chunking strategies and when to use them](02_chunking_strategies.md) for
 simple diagrams, DevOps examples, and chunk size/overlap guidance.
 
+## 🎤 Interview FAQ
 
+Key practice questions for this topic; answers are kept short.
+
+1. **What does a document loader return?**
+   Extracted content plus source details such as filename and file type. A path alone is not the document content.
+
+2. **Can the same reader handle TXT, PDF, and DOCX?**
+   Different formats need different extraction steps. They can then return the same text-and-metadata shape to the rest of the pipeline.
+
+3. **Why keep Markdown headings and command blocks?**
+   They help keep instructions tied to their topic. Removing them can make troubleshooting text harder to interpret.
+
+4. **What if a PDF reader returns no text?**
+   Check whether the page is a scan. It may need OCR, which reads text from images; a basic text reader does not do that.
+
+5. **Does reading a deployment command execute it?**
+   No. Ingestion reads it as document text; it does not run kubectl.

@@ -206,3 +206,22 @@ the other approaches here are theory.
 
 - [LangChain: splitting approaches](https://docs.langchain.com/oss/python/integrations/splitters)
 - [AWS: chunking options, parent/child retrieval, and semantic processing costs](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking.html)
+
+## 🎤 Interview FAQ
+
+Key practice questions for this topic; answers are kept short.
+
+1. **Fixed-size versus structure-aware chunking?**
+   Fixed-size cuts at a length limit. Structure-aware follows headings, records, or code blocks to keep related content together.
+
+2. **Does chunking always need an LLM?**
+   No. Fixed-size and heading rules use code. Semantic splitting can use embeddings; LLM-guided splitting asks a chat model to suggest cuts.
+
+3. **Does embedding chunks make the splitting semantic?**
+   No. Semantic splitting uses meaning-related information to choose cuts, not just to embed pieces afterward.
+
+4. **What is hierarchical retrieval?**
+   Search small child chunks, then provide their larger parent section when the answer needs surrounding steps.
+
+5. **Is greater overlap always better?**
+   No. It can preserve context, but also duplicates text and work. Check whether it improves evidence for your questions.

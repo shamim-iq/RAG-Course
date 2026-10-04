@@ -15,16 +15,18 @@ Status shows what we have built or checked; it does not assume course completion
 | 03 Keyword Search and Retrieval | Retrieval methods | 🟡 In Progress | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | 🟡 In Progress |
 | 04 Semantic Search and Embeddings | Module activities not yet covered | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started |
 | 04 Semantic Search and Embeddings | Scoring and re-ranking | 🟡 In Progress | ⬜ Not Started | ✅ Completed | ⬜ Not Started | 🟡 In Progress |
-| 05 Vector Databases | Module activities not yet covered | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started |
+| 05 Vector Databases | Concepts and DevOps operations | 🟡 In Progress | ⬜ Not Started | ✅ Completed | ⬜ Not Started | 🟡 In Progress |
 | 06 Building the RAG Pipeline | Module activities not yet covered | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started | ⬜ Not Started |
 
-- **Current Topic:** Document processing — text ingestion.
-- **Current Activity:** Read and try the separate file-type readers in `code/`.
-- **Next Immediate Activity:** Run `python code/ingestion.py --type txt`; install optional packages when trying DOCX/PDF.
+- **Current Topic:** Vector databases.
+- **Current Activity:** Read the concepts and operational checklist; theory only.
+- **Next Immediate Activity:** Review the notes before choosing a database hands-on activity.
 - **Completed hands-on labs:** None yet. Sample document preparation is complete.
 - **Interview Prep:** Introductory questions drafted; practice not yet reviewed together.
 
 ## Continue here
+
+- [Vector database theory](../Theory/05_vector_databases.md): notes ready; database hands-on not started.
 
 - [Scoring and re-ranking theory](../Theory/04_scoring_and_reranking.md): notes added; re-ranking code not implemented.
 - [Retrieval methods theory](../Theory/03_retrieval_methods.md): sparse/BM25, dense, vector search, and hybrid search notes added; retrieval code not implemented.
