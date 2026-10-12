@@ -1,6 +1,7 @@
 # ☁️ AWS RAG: S3, Titan, and OpenSearch
 
 Read [RAG fundamentals](00_start_here_rag_fundamentals.md) first.
+For permissions and safe retrieval, read the [Bedrock RAG security guide](bedrock-rag-security/README.md).
 This is a design guide, not a deployed project. Examples use fictional runbooks.
 AWS options checked on **2026-09-21**; check linked documentation before setup.
 
