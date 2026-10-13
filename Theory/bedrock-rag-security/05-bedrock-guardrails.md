@@ -67,6 +67,9 @@ check may mask the identifier. For A, block the report before the model sees it 
 
 **Takeaway:** permission to read and permission to output a type of content are separate decisions.
 
+For card masking, cross-customer requests, deterministic checks, and approval
+workflows, see [PII, middleware, and human review](08-pii-middleware-and-human-review.md).
+
 ## 🎤 Interview FAQ
 
 1. **Can Guardrails replace IAM?** No; content checks do not grant or deny AWS resource access.

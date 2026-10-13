@@ -30,6 +30,12 @@ A secure chatbot needs both.
 | [5. Guardrails](05-bedrock-guardrails.md) | Which content checks complement access control? |
 | [6. End-to-end architecture](06-end-to-end-architecture.md) | How do the layers work together? |
 | [7. Interview questions](07-interview-questions.md) | Can I explain failures and fixes? |
+| [8. PII, middleware, and human review](08-pii-middleware-and-human-review.md) | How do we protect card, bank, email, and phone data? |
+
+Guide 8 adds customer/field access, masking, deterministic versus model-based
+checks, and optional human approval. It was checked on **13 October 2026**.
+This folder covers the main layers in this proposed design, not every possible
+middleware or a guarantee of production security.
 
 ## 🎯 Design choice
 
